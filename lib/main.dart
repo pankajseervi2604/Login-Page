@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       ensureScreenSize: true,
       builder: (context, child) {
         return MaterialApp(
-          debugShowMaterialGrid: true,
+          debugShowMaterialGrid: false,
           debugShowCheckedModeBanner: false,
           initialRoute: "/index",
           routes: {

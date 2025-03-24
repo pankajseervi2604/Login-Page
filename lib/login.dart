@@ -1,4 +1,5 @@
 import 'package:firebase_practice_1/components/account_connection.dart';
+import 'package:firebase_practice_1/register.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -142,11 +143,7 @@ class Login extends StatelessWidget {
                       ),
                       minimumSize: Size(double.infinity, 50.h),
                     ),
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => Login(),
-                      ));
-                    },
+                    onPressed: () {},
                     child: Text(
                       "Sign in",
                       style: TextStyle(
@@ -158,15 +155,22 @@ class Login extends StatelessWidget {
                   SizedBox(
                     height: 30.h,
                   ),
-                  Text(
-                    "Create new account",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 13.sp,
-                      fontWeight: FontWeight.w400,
-                      decoration: TextDecoration.underline,
-                      decorationThickness: 1.5,
-                      decorationStyle: TextDecorationStyle.dotted,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => Register(),
+                      ));
+                    },
+                    child: Text(
+                      "Create new account",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.w400,
+                        decoration: TextDecoration.underline,
+                        decorationThickness: 1.5,
+                        decorationStyle: TextDecorationStyle.dotted,
+                      ),
                     ),
                   ),
                   SizedBox(
