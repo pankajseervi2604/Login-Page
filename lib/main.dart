@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           debugShowMaterialGrid: true,
           debugShowCheckedModeBanner: false,
-          initialRoute: "/login",
+          initialRoute: "/index",
           routes: {
             "/index": (context) => IndexScreen(),
             "/login": (context) => Login(),
