@@ -161,7 +161,21 @@ class Register extends StatelessWidget {
                       ),
                       minimumSize: Size(double.infinity, 50.h),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          closeIconColor: Colors.grey,
+                          showCloseIcon: true,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.r)),
+                          margin: EdgeInsets.all(10.r),
+                          padding: EdgeInsets.only(left: 8.r, right: 8.r),
+                          behavior: SnackBarBehavior.floating,
+                          content: Text("Account created successfully"),
+                        ),
+                      );
+                      Navigator.of(context).pop();
+                    },
                     child: Text(
                       "Sign up",
                       style: TextStyle(

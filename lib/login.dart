@@ -1,14 +1,22 @@
 import 'package:firebase_practice_1/components/account_connection.dart';
 import 'package:firebase_practice_1/register.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class Login extends StatelessWidget {
+class Login extends StatefulWidget {
   const Login({super.key});
 
   @override
+  State<Login> createState() => _LoginState();
+}
+
+class _LoginState extends State<Login> {
+  bool onClicked = true;
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // Scaffold BG color
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
@@ -47,6 +55,7 @@ class Login extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
+                  // Email textfield
                   TextField(
                     cursorColor: Color.fromRGBO(32, 65, 186, 1),
                     cursorErrorColor: Colors.red,
@@ -82,6 +91,7 @@ class Login extends StatelessWidget {
                   SizedBox(
                     height: 30.h,
                   ),
+                  // Password textfield
                   TextField(
                     cursorColor: Color.fromRGBO(32, 65, 186, 1),
                     cursorErrorColor: Colors.red,
@@ -112,11 +122,23 @@ class Login extends StatelessWidget {
                           width: 2,
                         ),
                       ),
+                      suffixIcon: IconButton(
+                        icon: onClicked
+                            ? Icon(CupertinoIcons.eye_slash)
+                            : Icon(CupertinoIcons.eye),
+                        onPressed: () {
+                          setState(() {
+                            onClicked = !onClicked;
+                          });
+                        },
+                      ),
                     ),
+                    obscureText: onClicked,
                   ),
                   SizedBox(
                     height: 15.h,
                   ),
+                  // Forget password
                   Align(
                     alignment: Alignment.centerRight,
                     child: GestureDetector(
@@ -133,6 +155,7 @@ class Login extends StatelessWidget {
                   SizedBox(
                     height: 20.h,
                   ),
+                  // Sign in button
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromRGBO(32, 65, 186, 1),
@@ -143,7 +166,20 @@ class Login extends StatelessWidget {
                       ),
                       minimumSize: Size(double.infinity, 50.h),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          closeIconColor: Colors.grey,
+                          showCloseIcon: true,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.r)),
+                          margin: EdgeInsets.all(10.r),
+                          padding: EdgeInsets.only(left: 8.r, right: 8.r),
+                          behavior: SnackBarBehavior.floating,
+                          content: Text("Successfully Logined"),
+                        ),
+                      );
+                    },
                     child: Text(
                       "Sign in",
                       style: TextStyle(
@@ -161,6 +197,7 @@ class Login extends StatelessWidget {
                         builder: (context) => Register(),
                       ));
                     },
+                    // Create new account
                     child: Text(
                       "Create new account",
                       style: TextStyle(

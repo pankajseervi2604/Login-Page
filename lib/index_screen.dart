@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_practice_1/login.dart';
 import 'package:firebase_practice_1/register.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +16,13 @@ class IndexScreen extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(
                 top: 100.r, left: 16.r, right: 16.r, bottom: 30.r),
-            child: Lottie.network(
-                'https://lottie.host/4847de16-0835-4ecb-a2d0-e43051163384/758WxUMJgp.json'),
+            child: Lottie.asset(
+              animate: true,
+              backgroundLoading: true,
+              frameRate: FrameRate(120),
+              filterQuality: FilterQuality.high,
+              'assets/illusturation/Animation - 1742824645954.json',
+            ),
           ),
           Text(
             "Discover Your\nDream Job here",
