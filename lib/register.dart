@@ -2,11 +2,20 @@ import 'package:firebase_practice_1/components/account_connection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class Register extends StatelessWidget {
+class Register extends StatefulWidget {
   const Register({super.key});
 
   @override
+  State<Register> createState() => _RegisterState();
+}
+
+class _RegisterState extends State<Register> {
+  @override
   Widget build(BuildContext context) {
+    final _newEmail = TextEditingController();
+    final _newPassword= TextEditingController();
+    final _re_enterPassword = TextEditingController();
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -47,6 +56,7 @@ class Register extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   TextField(
+                    controller: _newEmail,
                     cursorColor: Color.fromRGBO(32, 65, 186, 1),
                     cursorErrorColor: Colors.red,
                     keyboardType: TextInputType.emailAddress,
@@ -82,6 +92,7 @@ class Register extends StatelessWidget {
                     height: 30.h,
                   ),
                   TextField(
+                    controller: _newPassword,
                     cursorColor: Color.fromRGBO(32, 65, 186, 1),
                     cursorErrorColor: Colors.red,
                     keyboardType: TextInputType.emailAddress,
@@ -117,6 +128,7 @@ class Register extends StatelessWidget {
                     height: 30.h,
                   ),
                   TextField(
+                    controller: _re_enterPassword,
                     cursorColor: Color.fromRGBO(32, 65, 186, 1),
                     cursorErrorColor: Colors.red,
                     keyboardType: TextInputType.emailAddress,

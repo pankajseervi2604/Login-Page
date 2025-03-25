@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_practice_1/components/account_connection.dart';
 import 'package:firebase_practice_1/register.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,6 +14,25 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   bool onClicked = true;
+  final _email = TextEditingController();
+  final _password = TextEditingController();
+
+  // Sign in method 
+  Future signIn() async {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: _email.text.trim(),
+      password: _password.text.trim(),
+    );
+  }
+
+  @override
+  void dispose() {
+    // Disposing the controllers after using them
+    _email.dispose();
+    _password.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,6 +77,7 @@ class _LoginState extends State<Login> {
                 children: [
                   // Email textfield
                   TextField(
+                    controller: _email,
                     cursorColor: Color.fromRGBO(32, 65, 186, 1),
                     cursorErrorColor: Colors.red,
                     keyboardType: TextInputType.emailAddress,
@@ -93,6 +114,7 @@ class _LoginState extends State<Login> {
                   ),
                   // Password textfield
                   TextField(
+                    controller: _password,
                     cursorColor: Color.fromRGBO(32, 65, 186, 1),
                     cursorErrorColor: Colors.red,
                     keyboardType: TextInputType.emailAddress,
@@ -167,6 +189,7 @@ class _LoginState extends State<Login> {
                       minimumSize: Size(double.infinity, 50.h),
                     ),
                     onPressed: () {
+                      signIn();
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           closeIconColor: Colors.grey,

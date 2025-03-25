@@ -1,10 +1,13 @@
-import 'package:firebase_practice_1/index_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_practice_1/home.dart';
 import 'package:firebase_practice_1/login.dart';
-import 'package:firebase_practice_1/register.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-void main(List<String> args) {
+void main(List<String> args) async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -24,14 +27,30 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           debugShowMaterialGrid: false,
           debugShowCheckedModeBanner: false,
-          initialRoute: "/index",
-          routes: {
-            "/index": (context) => IndexScreen(),
-            "/login": (context) => Login(),
-            "/register": (context) => Register(),
-          },
+          home: MainPage(),
         );
       },
+    );
+  }
+}
+
+class MainPage extends StatelessWidget {
+  const MainPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      // To ensure that if user is logged in or not
+      body: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return Home();
+          } else {
+            return Login();
+          }
+        },
+      ),
     );
   }
 }
