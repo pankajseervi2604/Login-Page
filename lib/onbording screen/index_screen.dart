@@ -1,5 +1,5 @@
-import 'package:firebase_practice_1/login.dart';
-import 'package:firebase_practice_1/register.dart';
+import 'package:firebase_practice_1/pages/login.dart';
+import 'package:firebase_practice_1/pages/register.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';

@@ -1,12 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_practice_1/components/account_connection.dart';
-import 'package:firebase_practice_1/register.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Login extends StatefulWidget {
-  const Login({super.key});
+  // VoidCallback method is used to call the function without expecting any parameters
+  final VoidCallback showRegisterPage;
+  const Login({super.key, required this.showRegisterPage});
 
   @override
   State<Login> createState() => _LoginState();
@@ -14,10 +15,11 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   bool onClicked = true;
+  // text controllers
   final _email = TextEditingController();
   final _password = TextEditingController();
 
-  // Sign in method 
+  // Sign in method
   Future signIn() async {
     await FirebaseAuth.instance.signInWithEmailAndPassword(
       email: _email.text.trim(),
@@ -36,7 +38,6 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Scaffold BG color
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(
@@ -215,11 +216,7 @@ class _LoginState extends State<Login> {
                     height: 30.h,
                   ),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => Register(),
-                      ));
-                    },
+                    onTap: widget.showRegisterPage,
                     // Create new account
                     child: Text(
                       "Create new account",
