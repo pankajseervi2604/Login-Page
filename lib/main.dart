@@ -1,7 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+<<<<<<< HEAD
 import 'package:firebase_practice_1/pages/home.dart';
 import 'package:firebase_practice_1/pages/login.dart';
+=======
+import 'package:firebase_practice_1/auth/mainpage.dart';
+>>>>>>> 1cee2fc (worked on adding user crenditials to authenticate user)
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -34,23 +37,4 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MainPage extends StatelessWidget {
-  const MainPage({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      // To ensure that if user is logged in or not
-      body: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return Home();
-          } else {
-            return Login();
-          }
-        },
-      ),
-    );
-  }
-}

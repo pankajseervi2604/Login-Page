@@ -1,9 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_practice_1/components/account_connection.dart';
+import 'package:firebase_practice_1/pages/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class Register extends StatefulWidget {
-  const Register({super.key});
+  final VoidCallback showLoginPage;
+  const Register({super.key, required this.showLoginPage});
 
   @override
   State<Register> createState() => _RegisterState();
@@ -12,9 +15,28 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
-    final _newEmail = TextEditingController();
-    final _newPassword= TextEditingController();
-    final _re_enterPassword = TextEditingController();
+    // text controllers
+    final newEmail = TextEditingController();
+    final newPassword = TextEditingController();
+    final conformPassword = TextEditingController();
+
+    bool passwordConfirmed() {
+      if (newPassword.text.trim() == conformPassword.text.trim()) {
+        return true;
+      } else {
+        // todo : make visible error text that "password is not matching"
+        return false;
+      }
+    }
+
+    Future signUp() async {
+      if (passwordConfirmed()) {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: newEmail.text.trim(),
+          password: newPassword.text.trim(),
+        );
+      }
+    }
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -50,13 +72,14 @@ class _RegisterState extends State<Register> {
             SizedBox(
               height: 60.h,
             ),
+            // Email Textfield
             Padding(
               padding: EdgeInsets.only(left: 16.r, right: 16.r),
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   TextField(
-                    controller: _newEmail,
+                    controller: newEmail,
                     cursorColor: Color.fromRGBO(32, 65, 186, 1),
                     cursorErrorColor: Colors.red,
                     keyboardType: TextInputType.emailAddress,
@@ -89,10 +112,11 @@ class _RegisterState extends State<Register> {
                     ),
                   ),
                   SizedBox(
-                    height: 30.h,
+                    height: 10.h,
                   ),
+                  // New password textfield
                   TextField(
-                    controller: _newPassword,
+                    controller: newPassword,
                     cursorColor: Color.fromRGBO(32, 65, 186, 1),
                     cursorErrorColor: Colors.red,
                     keyboardType: TextInputType.emailAddress,
@@ -125,10 +149,11 @@ class _RegisterState extends State<Register> {
                     ),
                   ),
                   SizedBox(
-                    height: 30.h,
+                    height: 10.h,
                   ),
+                  // Conform password textfield
                   TextField(
-                    controller: _re_enterPassword,
+                    controller: conformPassword,
                     cursorColor: Color.fromRGBO(32, 65, 186, 1),
                     cursorErrorColor: Colors.red,
                     keyboardType: TextInputType.emailAddress,
@@ -174,19 +199,7 @@ class _RegisterState extends State<Register> {
                       minimumSize: Size(double.infinity, 50.h),
                     ),
                     onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          closeIconColor: Colors.grey,
-                          showCloseIcon: true,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.r)),
-                          margin: EdgeInsets.all(10.r),
-                          padding: EdgeInsets.only(left: 8.r, right: 8.r),
-                          behavior: SnackBarBehavior.floating,
-                          content: Text("Account created successfully"),
-                        ),
-                      );
-                      Navigator.of(context).pop();
+                      signUp();
                     },
                     child: Text(
                       "Sign up",
