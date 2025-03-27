@@ -1,10 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
-<<<<<<< HEAD
-import 'package:firebase_practice_1/pages/home.dart';
-import 'package:firebase_practice_1/pages/login.dart';
-=======
 import 'package:firebase_practice_1/auth/mainpage.dart';
->>>>>>> 1cee2fc (worked on adding user crenditials to authenticate user)
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
