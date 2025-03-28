@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_practice_1/components/account_connection.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,8 @@ class _RegisterState extends State<Register> {
     final newEmail = TextEditingController();
     final newPassword = TextEditingController();
     final conformPassword = TextEditingController();
+    final userName = TextEditingController();
+    final userAge = TextEditingController();
 
     bool passwordConfirmed() {
       if (newPassword.text.trim() == conformPassword.text.trim()) {
@@ -28,11 +31,26 @@ class _RegisterState extends State<Register> {
       }
     }
 
+    Future userData(String name, int age, String email) async {
+      await FirebaseFirestore.instance.collection('users').add({
+        'Name': name,
+        'Age': age,
+        'Email': email,
+      });
+    }
+
     Future signUp() async {
       if (passwordConfirmed()) {
+        // creating user new account
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: newEmail.text.trim(),
           password: newPassword.text.trim(),
+        );
+        // Adding user data
+        userData(
+          userName.text.trim(),
+          int.parse(userAge.text.trim()),
+          newEmail.text.trim(),
         );
       }
     }
@@ -43,7 +61,7 @@ class _RegisterState extends State<Register> {
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.only(left: 30.r, right: 30.r, top: 150.r),
+              padding: EdgeInsets.only(left: 30.r, right: 30.r, top: 75.r),
               child: Align(
                 alignment: Alignment.center,
                 child: Text(
@@ -77,6 +95,79 @@ class _RegisterState extends State<Register> {
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 children: [
+                  TextField(
+                    controller: userName,
+                    cursorColor: Color.fromRGBO(32, 65, 186, 1),
+                    cursorErrorColor: Colors.red,
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.all(16.r),
+                      filled: true,
+                      hintText: "Name",
+                      fillColor: Color.fromRGBO(242, 245, 255, 1),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.r),
+                        borderSide: BorderSide(
+                          color: Colors.grey,
+                          width: 2,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.r),
+                        borderSide: BorderSide(
+                          color: Color.fromRGBO(32, 65, 186, 1),
+                          width: 2,
+                        ),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.r),
+                        borderSide: BorderSide(
+                          color: Colors.red,
+                          width: 2,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  TextField(
+                    controller: userAge,
+                    cursorColor: Color.fromRGBO(32, 65, 186, 1),
+                    cursorErrorColor: Colors.red,
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      contentPadding: EdgeInsets.all(16.r),
+                      filled: true,
+                      hintText: "Age",
+                      fillColor: Color.fromRGBO(242, 245, 255, 1),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.r),
+                        borderSide: BorderSide(
+                          color: Colors.grey,
+                          width: 2,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.r),
+                        borderSide: BorderSide(
+                          color: Color.fromRGBO(32, 65, 186, 1),
+                          width: 2,
+                        ),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.r),
+                        borderSide: BorderSide(
+                          color: Colors.red,
+                          width: 2,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10.h,
+                  ),
+                  // new email textfield
                   TextField(
                     controller: newEmail,
                     cursorColor: Color.fromRGBO(32, 65, 186, 1),
