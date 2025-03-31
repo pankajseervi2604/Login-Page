@@ -22,10 +22,42 @@ class _LoginState extends State<Login> {
 
   // Sign in method
   Future signIn() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-      email: _email.text.trim(),
-      password: _password.text.trim(),
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Center(child: CircularProgressIndicator());
+      },
     );
+
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _email.text.trim(),
+        password: _password.text.trim(),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          closeIconColor: Colors.grey,
+          showCloseIcon: true,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
+          margin: EdgeInsets.all(10.r),
+          padding: EdgeInsets.only(left: 8.r, right: 8.r),
+          behavior: SnackBarBehavior.floating,
+          content: Text("Successfully Logined"),
+        ),
+      );
+      Navigator.of(context).pop();
+    } on FirebaseAuthException {
+      Navigator.of(context).pop();
+      String errorMessage = 'incorrect email or password. Please try again.';
+      // Show error message
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(errorMessage),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
 
   @override
@@ -196,18 +228,6 @@ class _LoginState extends State<Login> {
                     ),
                     onPressed: () {
                       signIn();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          closeIconColor: Colors.grey,
-                          showCloseIcon: true,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.r)),
-                          margin: EdgeInsets.all(10.r),
-                          padding: EdgeInsets.only(left: 8.r, right: 8.r),
-                          behavior: SnackBarBehavior.floating,
-                          content: Text("Successfully Logined"),
-                        ),
-                      );
                     },
                     child: Text(
                       "Sign in",

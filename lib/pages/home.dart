@@ -12,18 +12,31 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final user = FirebaseAuth.instance.currentUser!;
-  // get documentIDs
   List<String> docIDs = [];
 
-  //get docIDs
+  // Fetch document IDs and update state
   Future getDocId() async {
+    List<String> tempDocIDs = [];
+
     await FirebaseFirestore.instance.collection('users').get().then(
+          // Ensure the list is empty before adding new IDs
           (value) => value.docs.forEach(
-            (element) {
-              docIDs.add(element.reference.id);
+            (document) {
+              tempDocIDs.add(document.reference.id);
             },
           ),
         );
+    // to reflect the changes in UI setstate is used
+    setState(() {
+      // this will asign the list of documentIDs into docIDs after that it is eary to use
+      docIDs = tempDocIDs;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getDocId(); // Fetch user IDs once when the widget loads
   }
 
   @override
@@ -56,49 +69,17 @@ class _HomeState extends State<Home> {
       body: Column(
         children: [
           Expanded(
-            child: FutureBuilder(
-              future: getDocId(),
-              builder: (context, snapshot) {
-                return ListView.builder(
-                  itemCount: docIDs.length,
-                  itemBuilder: (context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.rectangle,
-                          borderRadius: BorderRadius.circular(12.r),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey,
-                              blurStyle: BlurStyle.outer,
-                              spreadRadius: 5,
-                              blurRadius: 5,
-                              offset: Offset(0, 0),
-                            ),
-                          ],
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.all(8.0.r),
-                          child: Column(
-                            children: [
-                              CircleAvatar(
-                                radius: 45,
-                                backgroundImage: NetworkImage(
-                                  "https://avatar.iran.liara.run/public",
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10.h,
-                              ),
-                              GetUserData(documentId: docIDs[index]),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
+            child: ListView.builder(
+              itemCount: docIDs.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ListTile(
+                    title: GetUserData(documentId: docIDs[index]),
+                    tileColor: Colors.grey[200],
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                  ),
                 );
               },
             ),
@@ -109,28 +90,26 @@ class _HomeState extends State<Home> {
   }
 }
 
-//CRUD(Create ,Read ,Update, Delete) operations with firebase
-
-//getting user data
-
+// CRUD (Create, Read, Update, Delete) operations with Firebase
+// Reading user data
 class GetUserData extends StatelessWidget {
   final String documentId;
   const GetUserData({super.key, required this.documentId});
 
   @override
   Widget build(BuildContext context) {
-    // getting the collection
+    // Getting the collection
     CollectionReference users = FirebaseFirestore.instance.collection('users');
     return FutureBuilder<DocumentSnapshot>(
       future: users.doc(documentId).get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          // converting list to map
+          // Converting list to map
           Map<String, dynamic> data =
               snapshot.data!.data() as Map<String, dynamic>;
-          return Text("name: ${data['Name']}\nAge: ${data['Age']}");
+          return Text("Name: ${data['Name']}  Age: ${data['Age']}");
         }
-        return Text("Loading...");
+        return LinearProgressIndicator();
       },
     );
   }
